@@ -11,7 +11,7 @@ variable "environment" {
 variable "repositories" {
   description = "List of ECR repository names to create"
   type        = list(string)
-  
+
   validation {
     condition     = length(var.repositories) > 0
     error_message = "At least one repository must be specified."

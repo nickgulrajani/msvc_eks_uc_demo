@@ -17,7 +17,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 
   tags = merge(var.tags, {
-    Name = "${var.project_name}-${var.environment}-vpc"
+    Name                                                                   = "${var.project_name}-${var.environment}-vpc"
     "kubernetes.io/cluster/${var.project_name}-${var.environment}-cluster" = "shared"
   })
 }
@@ -41,10 +41,10 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = merge(var.tags, {
-    Name = "${var.project_name}-${var.environment}-public-subnet-${count.index + 1}"
-    Type = "public"
+    Name                                                                   = "${var.project_name}-${var.environment}-public-subnet-${count.index + 1}"
+    Type                                                                   = "public"
     "kubernetes.io/cluster/${var.project_name}-${var.environment}-cluster" = "shared"
-    "kubernetes.io/role/elb" = "1"
+    "kubernetes.io/role/elb"                                               = "1"
   })
 }
 
@@ -57,10 +57,10 @@ resource "aws_subnet" "private" {
   availability_zone = var.availability_zones[count.index]
 
   tags = merge(var.tags, {
-    Name = "${var.project_name}-${var.environment}-private-subnet-${count.index + 1}"
-    Type = "private"
+    Name                                                                   = "${var.project_name}-${var.environment}-private-subnet-${count.index + 1}"
+    Type                                                                   = "private"
     "kubernetes.io/cluster/${var.project_name}-${var.environment}-cluster" = "shared"
-    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/role/internal-elb"                                      = "1"
   })
 }
 
@@ -69,7 +69,7 @@ resource "aws_eip" "nat" {
   count = length(var.public_subnet_cidrs)
 
   domain = "vpc"
-  
+
   tags = merge(var.tags, {
     Name = "${var.project_name}-${var.environment}-nat-eip-${count.index + 1}"
   })
@@ -199,31 +199,31 @@ resource "aws_iam_role_policy" "flow_log" {
 resource "aws_vpc_endpoint" "s3" {
   vpc_id       = aws_vpc.main.id
   service_name = "com.amazonaws.${data.aws_region.current.name}.s3"
-  
+
   tags = merge(var.tags, {
     Name = "${var.project_name}-${var.environment}-s3-endpoint"
   })
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
-  vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.ecr.dkr"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = aws_subnet.private[*].id
-  security_group_ids  = [aws_security_group.vpc_endpoint.id]
-  
+  vpc_id             = aws_vpc.main.id
+  service_name       = "com.amazonaws.${data.aws_region.current.name}.ecr.dkr"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = aws_subnet.private[*].id
+  security_group_ids = [aws_security_group.vpc_endpoint.id]
+
   tags = merge(var.tags, {
     Name = "${var.project_name}-${var.environment}-ecr-dkr-endpoint"
   })
 }
 
 resource "aws_vpc_endpoint" "ecr_api" {
-  vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.ecr.api"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = aws_subnet.private[*].id
-  security_group_ids  = [aws_security_group.vpc_endpoint.id]
-  
+  vpc_id             = aws_vpc.main.id
+  service_name       = "com.amazonaws.${data.aws_region.current.name}.ecr.api"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = aws_subnet.private[*].id
+  security_group_ids = [aws_security_group.vpc_endpoint.id]
+
   tags = merge(var.tags, {
     Name = "${var.project_name}-${var.environment}-ecr-api-endpoint"
   })

@@ -99,8 +99,8 @@ resource "aws_ecr_repository_policy" "repositories" {
         Condition = {
           StringEquals = {
             "aws:userid" = [
-              "AIDACK*:*",  # EKS worker nodes
-              "AIDA*:*"     # Allow EKS service
+              "AIDACK*:*", # EKS worker nodes
+              "AIDA*:*"    # Allow EKS service
             ]
           }
         }

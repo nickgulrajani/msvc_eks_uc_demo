@@ -21,7 +21,7 @@ variable "vpc_id" {
 variable "subnet_ids" {
   description = "List of subnet IDs for EKS cluster"
   type        = list(string)
-  
+
   validation {
     condition     = length(var.subnet_ids) >= 2
     error_message = "At least 2 subnets must be provided for EKS cluster."
@@ -38,7 +38,7 @@ variable "node_group_desired_size" {
   description = "Desired number of nodes in the node group"
   type        = number
   default     = 2
-  
+
   validation {
     condition     = var.node_group_desired_size >= 1 && var.node_group_desired_size <= 20
     error_message = "Desired size must be between 1 and 20."
@@ -49,7 +49,7 @@ variable "node_group_max_size" {
   description = "Maximum number of nodes in the node group"
   type        = number
   default     = 4
-  
+
   validation {
     condition     = var.node_group_max_size >= 1 && var.node_group_max_size <= 50
     error_message = "Max size must be between 1 and 50."
@@ -60,7 +60,7 @@ variable "node_group_min_size" {
   description = "Minimum number of nodes in the node group"
   type        = number
   default     = 1
-  
+
   validation {
     condition     = var.node_group_min_size >= 0 && var.node_group_min_size <= 10
     error_message = "Min size must be between 0 and 10."
